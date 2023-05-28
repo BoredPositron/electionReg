@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>EuroSchool North Campus</h1>
+    <h2>Student Council Elections 2023</h2>
+    <div class="voter form">
+        <form id="votform">
+            <input type="Text" id="Name" name="Name"  placeholder="Enter Your Name" required><br><br>
+            <label for="Grade">Select Grade</label>
+            <select id="Grade" name="grade">
+                <option value="select">Select</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select><br><br>
+			<input type="Text" id="Section" name="section" placeholder="Enter Section" required><br><br>
+            <label for="Position">Select Position</label>
+            <select id="pos" name="pos">
+                <option value="select">Select</option>
+                <option value="HeadBoy">headboy</option>
+                <option value="hg">headgirl</option>
+            </select><br><br>   
+            <input id='symbol' type="text" name="symbol" placeholder="Enter Link for Symbol"><br><br>
+            <button type="submit">Login</button><br>
+        </form>
+    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+        import { set, ref, getDatabase } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-database.js"
+        const config = {
+            apiKey: "AIzaSyDKDHxnmUHyb8MDdOO9cvg8wu7l8nlyYiA",
+            authDomain: "electionsatlog.firebaseapp.com",
+            projectId: "electionsatlog",
+            storageBucket: "electionsatlog.appspot.com",
+            messagingSenderId: "156764480448",
+            appId: "1:156764480448:web:22ad58b891f7161b855e25",
+            measurementId: "G-49F33ZYNSJ"
+        };
+        const app = initializeApp(config);
+        const db = getDatabase(app);
+
+        const form = document.getElementById('votform');
+        function submit(event){
+            event.preventDefault()
+            const studName = document.getElementById('Name').value;
+            sessionStorage.setItem('name', studName)
+            const grade = document.getElementById('Grade').value;
+            const section = document.getElementById('Section').value;
+            const position = document.getElementById('pos').value;
+            const symbol = document.getElementById('symbol').value;
+            set (ref(db, 'Candidates/'+position+'/'+studName+'/'),{
+                name: studName,
+                grade: grade,
+                section: section,
+                position: position,
+                symbol: symbol,
+            });
+            alert("Success!")
+        };
+
+        form.addEventListener('submit', (e)=>{
+            submit(e);
+        });
+    </script>   
+</body>
+</html>
